@@ -6,7 +6,7 @@
 /*   By: mramiro- <mramiro-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 14:14:07 by mramiro-          #+#    #+#             */
-/*   Updated: 2024/04/16 15:13:53 by mramiro-         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:56:12 by mramiro-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ char **parse(char *input)
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	printf("\n$ ");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -40,23 +42,23 @@ int	main(int argc, char **argv, char **envp)
 	char	*path;
 	char	**tokens;
 
-	// signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sigint);
 	argc++;
 	while (1)
 	{
 		line = readline("$ ");
+		if (!line)
+			(printf("\n"), exit(0));
 		add_history(line);
 		tokens = parse(line);
 		child_pid = fork();
 		argv = NULL;
 		path = cmd_find(tokens[0], envp);
 		if (child_pid == 0)
-		{
-			execve(path, tokens, envp);
-			exit(1);
-		}
+			(execve(path, tokens, envp), exit(1));
 		else
-			wait(&child_status);
+			(wait(&child_status));
+		free_str_array(tokens);
 	}
 	return (0);
 }

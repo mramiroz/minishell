@@ -6,7 +6,7 @@
 /*   By: mramiro- <mramiro-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:15:26 by mramiro-          #+#    #+#             */
-/*   Updated: 2024/04/09 15:41:17 by mramiro-         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:56:03 by mramiro-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <sys/types.h>
+#include <signal.h>
 #include "libft/libft.h"
 
 char    *cmd_find(char *cmd, char **env);
 int     handle_error(char *msg);
+void    free_str_array(char **arr);
 #endif
